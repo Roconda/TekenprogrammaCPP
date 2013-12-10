@@ -6,6 +6,7 @@ class ACircle :
 public:
 	ACircle(void);
 	~ACircle(void);
-	void draw();
+	void undraw(CDC *pDC);
+	void draw(CDC *pDC);
 };
 

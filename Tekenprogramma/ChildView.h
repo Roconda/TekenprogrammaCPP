@@ -18,20 +18,20 @@ public:
 	CChildView();
 
 // Attributes
-public:
+private:
 	vector<ACircle*> shapes;
 
 // Operations
 public:
 
 // Overrides
-	protected:
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 // Implementation
 public:
 	virtual ~CChildView();
-
+	AShape* getLastShape();
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
@@ -40,5 +40,6 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnEditUndo();
 };
 
