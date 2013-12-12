@@ -73,6 +73,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	ACircle *as = new ACircle();
 	as->setStartPoint(point);
 	shapes.push_back(as);
+	shapes.shrink_to_fit();
 
 	// WTF is dit
 	//CWnd::OnLButtonDown(nFlags, point);
@@ -80,13 +81,13 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 
 // Geeft de laatste shape pointer terug.
 AShape* CChildView::getLastShape() {
-	if(shapes.size() > 0){
-		return shapes.back();
-	}else{
-		// TODO: een nette oplossing vinden
-		AShape* uselessShape = new ACircle;
-		return uselessShape;
+	for(int i= shapes.size()-1; i>0; i--){
+		if(shapes[i] != nullptr) return shapes[i];
 	}
+
+	// TODO: een nette oplossing vinden
+	AShape* uselessShape = new ACircle;
+	return uselessShape;
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
@@ -159,9 +160,12 @@ void CChildView::OnEditUndo()
 {
 	CDC* pDC = GetDC();
 
-	AShape* shape = getLastShape();
-	shape->undraw(pDC);
+	getLastShape()->undraw(pDC);
 
 	delete getLastShape();
+
+	shapes.pop_back();
+	shapes.shrink_to_fit();
+
 	ReleaseDC(pDC);
 }

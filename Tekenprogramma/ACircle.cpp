@@ -7,7 +7,7 @@ ACircle::ACircle(void)
 }
 
 void ACircle::undraw(CDC *pDC) {
-	pDC->SetROP2(R2_NOTXORPEN);
+	pDC->SetROP2(R2_XORPEN);
 	pDC->Ellipse(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 }
 
