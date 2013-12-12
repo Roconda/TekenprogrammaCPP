@@ -85,9 +85,7 @@ AShape* CChildView::getLastShape() {
 		if(shapes[i] != nullptr) return shapes[i];
 	}
 
-	// TODO: een nette oplossing vinden
-	AShape* uselessShape = new ACircle;
-	return uselessShape;
+	return NULL;
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
@@ -98,7 +96,7 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
       CDC  *pDC = GetDC();
 	  //notxor pen maakt zwart wit
 		// pas waarde aan
-		if(endPoint.x != -1) {
+		if(endPoint.x != -1 && getLastShape() != NULL) {
 			getLastShape()->setEndPoint(point);
 			getLastShape()->draw(GetDC());
 		}
@@ -160,12 +158,14 @@ void CChildView::OnEditUndo()
 {
 	CDC* pDC = GetDC();
 
-	getLastShape()->undraw(pDC);
+	if(getLastShape()!= NULL){
+		getLastShape()->undraw(pDC);
 
-	delete getLastShape();
+		delete getLastShape();
 
-	shapes.pop_back();
-	shapes.shrink_to_fit();
+		shapes.pop_back();
+		shapes.shrink_to_fit();
+	}
 
 	ReleaseDC(pDC);
 }
