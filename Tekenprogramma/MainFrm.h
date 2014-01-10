@@ -34,6 +34,7 @@ public:
 
 protected:  // control bar embedded members
 	CToolBar          m_wndToolBar;
+	CToolBar          m_customToolbar;
 	CStatusBar        m_wndStatusBar;
 	CChildView    m_wndView;
 
