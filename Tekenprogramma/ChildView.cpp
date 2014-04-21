@@ -7,6 +7,8 @@
 #include "ChildView.h"
 #include "AShape.h"
 #include "ACircle.h"
+#include "ARectangle.h"
+#include "Settings.h"
 #include <vector>
 #include <iostream>
 
@@ -70,13 +72,15 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 	startPoint = point;
 	
-	ACircle *as = new ACircle();
+	ACircle* as;
+
+	if(Settings::shapeSelected == 0) as = new ACircle();
+	else if(Settings::shapeSelected == 1) as = new ARectangle();
+	else as = new ACircle();
+
 	as->setStartPoint(point);
 	shapes.push_back(as);
 	shapes.shrink_to_fit();
-
-	// WTF is dit
-	//CWnd::OnLButtonDown(nFlags, point);
 }
 
 // Geeft de laatste shape pointer terug.
@@ -148,6 +152,8 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
    ReleaseDC(pDC);
    startPoint.x = -1;
    endPoint.x = -1;
+
+   delete getLastShape();
 
 	// WTF IS DIT
 	//CWnd::OnLButtonUp(nFlags, point);

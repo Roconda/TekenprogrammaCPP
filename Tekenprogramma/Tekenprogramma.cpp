@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "Tekenprogramma.h"
 #include "MainFrm.h"
+#include "Settings.h"
 
 
 #ifdef _DEBUG
@@ -160,20 +161,13 @@ void CTekenprogrammaApp::OnAppAbout()
 }
 
 // CTekenprogrammaApp message handlers
-
-
-
-
+void CTekenprogrammaApp::OnShapesCircle()
+{
+	Settings::shapeSelected = 0;
+}
 
 void CTekenprogrammaApp::OnShapesRectangle()
 {
-	// TODO: Add your command handler code here
-	MessageBox(0, L"Rectangle", L"Draw", 0);
+	Settings::shapeSelected = 1;
 }
 
-
-void CTekenprogrammaApp::OnShapesCircle()
-{
-	// TODO: Add your command handler code here
-	MessageBox(0, L"Circle", L"Draw", 0); 
-}

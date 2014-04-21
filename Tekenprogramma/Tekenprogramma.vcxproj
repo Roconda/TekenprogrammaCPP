@@ -102,19 +102,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACircle.h" />
+    <ClInclude Include="ARectangle.h" />
     <ClInclude Include="AShape.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tekenprogramma.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ACircle.cpp" />
+    <ClCompile Include="ARectangle.cpp" />
     <ClCompile Include="AShape.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
