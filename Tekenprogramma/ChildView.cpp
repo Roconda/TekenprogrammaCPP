@@ -69,7 +69,6 @@ void CChildView::OnPaint()
 
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
 	startPoint = point;
 	
 	ACircle* as;
@@ -80,16 +79,12 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	as->setStartPoint(point);
 	shapes.push_back(as);
-	shapes.shrink_to_fit();
 }
 
 // Geeft de laatste shape pointer terug.
 AShape* CChildView::getLastShape() {
-	for(int i= shapes.size()-1; i>0; i--){
-		if(shapes[i] != nullptr) return shapes[i];
-	}
-
-	return NULL;
+	if(shapes.size() > 0)return shapes[shapes.size()-1];
+	else return NULL;
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
@@ -127,36 +122,18 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
       endPoint = point;
    }
 
-	// WTF is dit
-	//CWnd::OnMouseMove(nFlags, point);
 }
 
 
 void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	//endPoint = point;
-
 	CDC* pDC = GetDC();
 
-
-	//bier->setEndPoint(&endPoint);
-
-	//getLastShape()->draw(GetDC());
-
-
-	//bier->getStartPoint();
-	//bier->getEndPoint();
-
-
-	point;
    ReleaseDC(pDC);
+
+   // Reset start and endpoints for upcoming shapes.
    startPoint.x = -1;
    endPoint.x = -1;
-
-   delete getLastShape();
-
-	// WTF IS DIT
-	//CWnd::OnLButtonUp(nFlags, point);
 }
 
 
@@ -164,7 +141,7 @@ void CChildView::OnEditUndo()
 {
 	CDC* pDC = GetDC();
 
-	if(getLastShape()!= NULL){
+	if(getLastShape()!= NULL && getLastShape() != nullptr){
 		getLastShape()->undraw(pDC);
 
 		delete getLastShape();
