@@ -11,6 +11,7 @@ void AShape::undraw(CDC *pDC) {
 }
 
 void AShape::draw(CDC *pDC){
+	pDC->SetROP2(R2_NOTXORPEN);
 }
 
 void AShape::setStartPoint(CPoint &point)

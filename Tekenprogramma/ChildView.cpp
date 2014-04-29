@@ -59,13 +59,12 @@ void CChildView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	
-	// TODO: Add your message handler code here
-	//MessageBox(L"Rectangle", L"Draw", 0);
-	
-	// Do not call CWnd::OnPaint() for painting messages
+	CDC* pDC = GetDC();
+
+	for(int i=0; i<shapes.size(); i++) shapes[i]->undraw(pDC);
+
+	ReleaseDC(pDC);
 }
-
-
 
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -104,9 +103,9 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
       pDC->SelectStockObject(SS_BLACKRECT);
       
       // Je kunt ook zelf een pen maken:
-      //  CPen pen;
-      //  pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
-      //  pDC->SelectObject(&pen);
+      CPen pen;
+      pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
+      pDC->SelectObject(&pen);
 
       // Teken met NOT XOR
       //pDC->SetROP2(R2_NOTXORPEN);
@@ -147,7 +146,6 @@ void CChildView::OnEditUndo()
 		delete getLastShape();
 
 		shapes.pop_back();
-		shapes.shrink_to_fit();
 	}
 
 	ReleaseDC(pDC);

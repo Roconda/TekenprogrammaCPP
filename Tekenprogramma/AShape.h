@@ -20,5 +20,6 @@ public:
 	CPoint startPoint;
 	CPoint previousPoint;
 	CPoint endPoint;
+	CPen pen;
 };
 
