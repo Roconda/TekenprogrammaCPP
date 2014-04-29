@@ -103,7 +103,9 @@ BOOL CTekenprogrammaApp::InitInstance()
 		NULL);
 
 
-
+	// Check circle by default
+	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
+	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_CHECKED | MF_BYCOMMAND);
 
 
 	// The one and only window has been initialized, so show and update it
@@ -164,10 +166,22 @@ void CTekenprogrammaApp::OnAppAbout()
 void CTekenprogrammaApp::OnShapesCircle()
 {
 	Settings::shapeSelected = 0;
+
+	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
+
+	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_UNCHECKED | MF_BYCOMMAND);
+
+	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_CHECKED | MF_BYCOMMAND);
 }
 
 void CTekenprogrammaApp::OnShapesRectangle()
 {
 	Settings::shapeSelected = 1;
+
+	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
+
+	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_UNCHECKED | MF_BYCOMMAND);
+
+	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_CHECKED | MF_BYCOMMAND);
 }
 
