@@ -18,10 +18,11 @@ void ALine::undraw(CDC *pDC) {
 }
 
 void ALine::draw(CDC *pDC){
+	AShape::draw(pDC);
 
 	if(previousPoint.x != -1) {
-		pDC->MoveTo(previousPoint);
-		pDC->LineTo(startPoint);
+		pDC->MoveTo(startPoint);
+		pDC->LineTo(previousPoint);
 	}
 
 	pDC->MoveTo(startPoint);
