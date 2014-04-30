@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACircle.h" />
+    <ClInclude Include="ALine.h" />
     <ClInclude Include="ARectangle.h" />
     <ClInclude Include="AShape.h" />
     <ClInclude Include="ChildView.h" />
@@ -114,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ACircle.cpp" />
+    <ClCompile Include="ALine.cpp" />
     <ClCompile Include="ARectangle.cpp" />
     <ClCompile Include="AShape.cpp" />
     <ClCompile Include="ChildView.cpp" />

@@ -21,6 +21,7 @@ BEGIN_MESSAGE_MAP(CTekenprogrammaApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CTekenprogrammaApp::OnAppAbout)
 	ON_COMMAND(ID_SHAPES_RECTANGLE, &CTekenprogrammaApp::OnShapesRectangle)
 	ON_COMMAND(ID_SHAPES_CIRCLE, &CTekenprogrammaApp::OnShapesCircle)
+	ON_COMMAND(ID_SHAPES_LINE, &CTekenprogrammaApp::OnShapesLine)
 END_MESSAGE_MAP()
 
 
@@ -170,6 +171,7 @@ void CTekenprogrammaApp::OnShapesCircle()
 	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
 
 	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_UNCHECKED | MF_BYCOMMAND);
+	pMenu->CheckMenuItem(ID_SHAPES_LINE, MF_UNCHECKED | MF_BYCOMMAND);
 
 	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_CHECKED | MF_BYCOMMAND);
 }
@@ -181,7 +183,21 @@ void CTekenprogrammaApp::OnShapesRectangle()
 	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
 
 	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_UNCHECKED | MF_BYCOMMAND);
+	pMenu->CheckMenuItem(ID_SHAPES_LINE, MF_UNCHECKED | MF_BYCOMMAND);
 
 	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_CHECKED | MF_BYCOMMAND);
 }
 
+
+
+void CTekenprogrammaApp::OnShapesLine()
+{
+	Settings::shapeSelected = 2;
+
+	CMenu *pMenu = AfxGetMainWnd()->GetMenu();
+
+	pMenu->CheckMenuItem(ID_SHAPES_CIRCLE, MF_UNCHECKED | MF_BYCOMMAND);
+	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_UNCHECKED | MF_BYCOMMAND);
+
+	pMenu->CheckMenuItem(ID_SHAPES_LINE, MF_CHECKED | MF_BYCOMMAND);
+}

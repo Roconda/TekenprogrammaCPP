@@ -32,6 +32,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnShapesRectangle();
 	afx_msg void OnShapesCircle();
+	afx_msg void OnShapesLine();
 };
 
 extern CTekenprogrammaApp theApp;

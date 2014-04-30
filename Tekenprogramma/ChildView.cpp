@@ -7,6 +7,7 @@
 #include "ChildView.h"
 #include "AShape.h"
 #include "ACircle.h"
+#include "ALine.h"
 #include "ARectangle.h"
 #include "Settings.h"
 #include <vector>
@@ -70,10 +71,11 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	startPoint = point;
 	
-	ACircle* as;
+	AShape* as;
 
 	if(Settings::shapeSelected == 0) as = new ACircle();
 	else if(Settings::shapeSelected == 1) as = new ARectangle();
+	else if(Settings::shapeSelected == 2) as = new ALine();
 	else as = new ACircle();
 
 	as->setStartPoint(point);
@@ -89,7 +91,7 @@ AShape* CChildView::getLastShape() {
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	
-	   if(startPoint.x != -1)
+	if(startPoint.x != -1)
    {
       CDC  *pDC = GetDC();
 	  //notxor pen maakt zwart wit

@@ -122,6 +122,7 @@ BEGIN
     BEGIN
         MENUITEM "Rectangle",                   ID_SHAPES_RECTANGLE
         MENUITEM "Circle",                      ID_SHAPES_CIRCLE
+        MENUITEM "Line",                        ID_SHAPES_LINE
     END
     POPUP "&View"
     BEGIN

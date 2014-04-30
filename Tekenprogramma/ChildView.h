@@ -19,7 +19,7 @@ public:
 
 // Attributes
 private:
-	vector<ACircle*> shapes;
+	vector<AShape*> shapes;
 
 // Operations
 public:
