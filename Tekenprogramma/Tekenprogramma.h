@@ -33,6 +33,8 @@ public:
 	afx_msg void OnShapesRectangle();
 	afx_msg void OnShapesCircle();
 	afx_msg void OnShapesLine();
+	afx_msg void OnFileSavetofile();
+	afx_msg void OnFileOpenfile();
 };
 
 extern CTekenprogrammaApp theApp;

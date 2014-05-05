@@ -108,6 +108,8 @@ BEGIN
     MENUITEM SEPARATOR
     POPUP "&File"
     BEGIN
+        MENUITEM "Save to file",                ID_FILE_SAVETOFILE
+        MENUITEM "Open file",                   ID_FILE_OPENFILE
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
     POPUP "&Edit"

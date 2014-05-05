@@ -22,6 +22,8 @@ BEGIN_MESSAGE_MAP(CTekenprogrammaApp, CWinApp)
 	ON_COMMAND(ID_SHAPES_RECTANGLE, &CTekenprogrammaApp::OnShapesRectangle)
 	ON_COMMAND(ID_SHAPES_CIRCLE, &CTekenprogrammaApp::OnShapesCircle)
 	ON_COMMAND(ID_SHAPES_LINE, &CTekenprogrammaApp::OnShapesLine)
+	ON_COMMAND(ID_FILE_SAVETOFILE, &CTekenprogrammaApp::OnFileSavetofile)
+	ON_COMMAND(ID_FILE_OPENFILE, &CTekenprogrammaApp::OnFileOpenfile)
 END_MESSAGE_MAP()
 
 
@@ -200,4 +202,25 @@ void CTekenprogrammaApp::OnShapesLine()
 	pMenu->CheckMenuItem(ID_SHAPES_RECTANGLE, MF_UNCHECKED | MF_BYCOMMAND);
 
 	pMenu->CheckMenuItem(ID_SHAPES_LINE, MF_CHECKED | MF_BYCOMMAND);
+}
+
+
+void CTekenprogrammaApp::OnFileSavetofile()
+{
+	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
+	CFileDialog cfd = CFileDialog(false, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
+	
+	if(cfd.DoModal() == IDOK){
+		int i=1;
+		CString c = cfd.GetPathName();
+	}
+}
+
+
+void CTekenprogrammaApp::OnFileOpenfile()
+{
+	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
+
+	CFileDialog cfd = CFileDialog(true, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
+	cfd.DoModal();
 }
