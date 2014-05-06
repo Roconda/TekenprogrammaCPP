@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include<string>
 #include "AShape.h"
 
 AShape::AShape() {
@@ -35,4 +36,17 @@ CPoint* AShape::getEndPoint() {
 
 AShape::~AShape() {
 
+}
+
+std::string AShape::getSerialized() {
+	using namespace std;
+
+	return 
+		"{"
+		+to_string(shapeType)+","+
+		to_string(startPoint.x)+","+
+		to_string(startPoint.y)+","+
+		to_string(endPoint.x)+","+
+		to_string(endPoint.y)+
+		"}";
 }

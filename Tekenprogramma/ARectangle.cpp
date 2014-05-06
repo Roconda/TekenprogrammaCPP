@@ -4,6 +4,7 @@
 
 ARectangle::ARectangle(void)
 {
+	shapeType = 1;
 }
 
 

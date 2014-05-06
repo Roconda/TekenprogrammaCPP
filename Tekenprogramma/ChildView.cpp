@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
 	ON_COMMAND(ID_EDIT_UNDO, &CChildView::OnEditUndo)
+	ON_COMMAND(ID_FILE_SAVETOFILE, &CChildView::OnFileSavetofile)
+	ON_COMMAND(ID_FILE_OPENFILE, &CChildView::OnFileOpenfile)
 END_MESSAGE_MAP()
 
 
@@ -59,10 +61,14 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
-	
+
+	redrawShapes(false);
+}
+
+void CChildView::redrawShapes(boolean draw) {
 	CDC* pDC = GetDC();
 
-	for(int i=0; i<shapes.size(); i++) shapes[i]->undraw(pDC);
+	for(int i=0; i<shapes.size(); i++) if(draw) { shapes[i]->draw(pDC); }else{ shapes[i]->undraw(pDC); };
 
 	ReleaseDC(pDC);
 }
@@ -94,7 +100,7 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 	if(startPoint.x != -1)
    {
       CDC  *pDC = GetDC();
-	  //notxor pen maakt zwart wit
+		//notxor pen maakt zwart wit
 		// pas waarde aan
 		if(endPoint.x != -1 && getLastShape() != NULL) {
 			getLastShape()->setEndPoint(point);
@@ -108,16 +114,6 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
       CPen pen;
       pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
       pDC->SelectObject(&pen);
-
-      // Teken met NOT XOR
-      //pDC->SetROP2(R2_NOTXORPEN);
-    
-      // Trek vorige rechthoek over. 2 x XOR geeft oorspronkelijke waarde
-      //if(endPoint.x != -1)
-      //   pDC->Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
-
-      // Teken huidige rechthoek met XOR: wit wordt zwart, zwart wordt wit
-      //pDC->Rectangle(startPoint.x, startPoint.y, point.x, point.y);
 
       ReleaseDC(pDC);
       endPoint = point;
@@ -135,6 +131,7 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
    // Reset start and endpoints for upcoming shapes.
    startPoint.x = -1;
    endPoint.x = -1;
+
 }
 
 
@@ -151,4 +148,32 @@ void CChildView::OnEditUndo()
 	}
 
 	ReleaseDC(pDC);
+}
+
+
+void CChildView::OnFileSavetofile()
+{
+	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
+	CFileDialog cfd = CFileDialog(false, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
+	CFile file;
+
+	if(cfd.DoModal() == IDOK){
+		string txt = "\xef\xbb\xbf"; // BOM
+
+		for(int i=0; i<shapes.size(); i++) txt.append(shapes[i]->getSerialized());
+
+		if(file.Open(cfd.GetPathName(), CFile::modeCreate | CFile::modeReadWrite) ) {
+			file.Write(txt.c_str(), txt.size());
+			file.Flush();
+		}
+	}
+}
+
+
+void CChildView::OnFileOpenfile()
+{
+	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
+
+	CFileDialog cfd = CFileDialog(true, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
+	cfd.DoModal();
 }

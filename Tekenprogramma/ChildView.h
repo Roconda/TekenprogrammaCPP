@@ -32,7 +32,7 @@ protected:
 public:
 	virtual ~CChildView();
 	AShape* getLastShape();
-	// Generated message map functions
+	void redrawShapes(boolean draw);
 protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
@@ -41,5 +41,7 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnEditUndo();
+	afx_msg void OnFileSavetofile();
+	afx_msg void OnFileOpenfile();
 };
 

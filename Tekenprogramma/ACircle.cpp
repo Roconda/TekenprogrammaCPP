@@ -4,6 +4,7 @@
 
 ACircle::ACircle(void)
 {
+	shapeType = 0;
 }
 
 void ACircle::undraw(CDC *pDC) {

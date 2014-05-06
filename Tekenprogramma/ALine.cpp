@@ -4,6 +4,7 @@
 
 ALine::ALine(void)
 {
+	shapeType = 2;
 }
 
 

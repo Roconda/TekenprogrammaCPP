@@ -105,7 +105,6 @@
     <ClInclude Include="ALine.h" />
     <ClInclude Include="ARectangle.h" />
     <ClInclude Include="AShape.h" />
-    <ClInclude Include="AWriter.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
@@ -119,7 +118,6 @@
     <ClCompile Include="ALine.cpp" />
     <ClCompile Include="ARectangle.cpp" />
     <ClCompile Include="AShape.cpp" />
-    <ClCompile Include="AWriter.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Settings.cpp" />

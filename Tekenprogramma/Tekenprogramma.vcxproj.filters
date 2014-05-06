@@ -51,9 +51,6 @@
     <ClInclude Include="ALine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tekenprogramma.cpp">
@@ -81,9 +78,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ALine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

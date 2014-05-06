@@ -207,20 +207,11 @@ void CTekenprogrammaApp::OnShapesLine()
 
 void CTekenprogrammaApp::OnFileSavetofile()
 {
-	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
-	CFileDialog cfd = CFileDialog(false, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
-	
-	if(cfd.DoModal() == IDOK){
-		int i=1;
-		CString c = cfd.GetPathName();
-	}
+	// legacy
 }
 
 
 void CTekenprogrammaApp::OnFileOpenfile()
 {
-	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
-
-	CFileDialog cfd = CFileDialog(true, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
-	cfd.DoModal();
+	// legacy
 }
