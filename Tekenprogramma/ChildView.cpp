@@ -12,6 +12,7 @@
 #include "Settings.h"
 #include <vector>
 #include <iostream>
+#include <stdlib.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -145,6 +146,7 @@ void CChildView::OnEditUndo()
 		delete getLastShape();
 
 		shapes.pop_back();
+		shapes.shrink_to_fit();
 	}
 
 	ReleaseDC(pDC);
@@ -175,5 +177,103 @@ void CChildView::OnFileOpenfile()
 	TCHAR szFilters[]= _T("Tekeningen (*.painting)|*.painting||");
 
 	CFileDialog cfd = CFileDialog(true, _T("painting"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters, NULL, 0, true);
-	cfd.DoModal();
+	CFile file;
+	string content = "";
+
+	if(cfd.DoModal() == IDOK) {
+		// Remove old shapes
+		for(int i=0; i<shapes.size(); i++) delete shapes[i];
+		shapes.clear();
+
+		// Clear screen
+		CDC* pDC = GetDC();
+		pDC->SetROP2(R2_WHITE);
+		pDC->Rectangle(0,0,99999,99999);
+		ReleaseDC(pDC);
+
+		if(file.Open(cfd.GetPathName(), CFile::modeRead | CFile::modeNoTruncate)) {
+			char* buffer = new char[file.GetLength()]();
+			file.Seek(3, CFile::begin); // ignore BOM
+			file.Read(buffer, file.GetLength());
+			content = buffer;
+			delete buffer;
+
+			CDC* pDC = GetDC();
+
+			vector<AShape*> tmpShapes;
+			short state = 0;
+			short substate = 0;
+			CPoint* tmpCPoint = nullptr;
+			string tmpPoint = "";
+			for(int i=0; i<content.size(); i++) {
+				char c = content[i];
+
+				if(c == '{') { state = 1; substate = 0; continue; } // entering shape creation
+				if(c == '}') {
+					tmpCPoint->y = atoi(tmpPoint.c_str());
+					tmpPoint = "";
+					tmpShapes.at(0)->setEndPoint(*tmpCPoint);
+					tmpShapes.at(0)->draw(pDC);
+					tmpCPoint = nullptr; //reset
+
+					state = 0;
+					shapes.push_back(tmpShapes.at(0));
+					tmpShapes.clear();
+				};
+
+				if(state == 1) {
+					if(substate == 0) {
+						switch(c){
+							case '0':
+								tmpShapes.push_back(new ACircle());
+								break;
+							case '1':
+								tmpShapes.push_back(new ARectangle());
+								break;
+							case '2':
+								tmpShapes.push_back(new ALine());
+								break;
+							default:
+								tmpShapes.push_back(new ACircle());
+						}
+						i++;
+						substate++;
+						continue;
+					}else if(substate == 1){
+						// CPoint X
+						if(c == ',') {
+							tmpCPoint = new CPoint(0,0);
+							tmpCPoint->x = atoi(tmpPoint.c_str());
+							tmpPoint = "";
+							substate++;
+							continue;
+						}else tmpPoint += c;
+					}else if(substate == 2){
+						// CPoint Y
+						if(c == ',') {
+							tmpCPoint->y = atoi(tmpPoint.c_str());
+							tmpPoint = "";
+							tmpShapes.at(0)->setStartPoint(*tmpCPoint);
+							tmpCPoint = nullptr; //reset
+							substate++;
+							continue;
+						}else tmpPoint += c;
+					} else if(substate == 3){
+						// CPoint X
+						if(c == ',') {
+							tmpCPoint = new CPoint(0,0);
+							tmpCPoint->x = atoi(tmpPoint.c_str());
+							tmpPoint = "";
+							substate++;
+							continue;
+						}else tmpPoint += c;
+					}else if(substate == 4){
+						// CPoint Y
+						tmpPoint += c;
+					}
+				}
+			}
+			ReleaseDC(pDC);
+		}
+	}
 }
