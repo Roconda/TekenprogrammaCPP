@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_EDIT_UNDO, &CChildView::OnEditUndo)
 	ON_COMMAND(ID_FILE_SAVETOFILE, &CChildView::OnFileSavetofile)
 	ON_COMMAND(ID_FILE_OPENFILE, &CChildView::OnFileOpenfile)
+	ON_COMMAND(IDR_TOOLBAR1, &CChildView::OnEditUndo)
 END_MESSAGE_MAP()
 
 
@@ -69,7 +70,7 @@ void CChildView::OnPaint()
 void CChildView::redrawShapes(boolean draw) {
 	CDC* pDC = GetDC();
 
-	for(int i=0; i<shapes.size(); i++) if(draw) { shapes[i]->draw(pDC); }else{ shapes[i]->undraw(pDC); };
+	for(unsigned int i=0; i<shapes.size(); i++) if(draw) { shapes[i]->draw(pDC); }else{ shapes[i]->undraw(pDC); };
 
 	ReleaseDC(pDC);
 }
@@ -162,7 +163,7 @@ void CChildView::OnFileSavetofile()
 	if(cfd.DoModal() == IDOK){
 		string txt = "\xef\xbb\xbf"; // BOM
 
-		for(int i=0; i<shapes.size(); i++) txt.append(shapes[i]->getSerialized());
+		for(unsigned int i=0; i<shapes.size(); i++) txt.append(shapes[i]->getSerialized());
 
 		if(file.Open(cfd.GetPathName(), CFile::modeCreate | CFile::modeReadWrite) ) {
 			file.Write(txt.c_str(), txt.size());
@@ -182,7 +183,7 @@ void CChildView::OnFileOpenfile()
 
 	if(cfd.DoModal() == IDOK) {
 		// Remove old shapes
-		for(int i=0; i<shapes.size(); i++) delete shapes[i];
+		for(unsigned int i=0; i<shapes.size(); i++) delete shapes[i];
 		shapes.clear();
 
 		// Clear screen
@@ -205,7 +206,7 @@ void CChildView::OnFileOpenfile()
 			short substate = 0;
 			CPoint* tmpCPoint = nullptr;
 			string tmpPoint = "";
-			for(int i=0; i<content.size(); i++) {
+			for(unsigned int i=0; i<content.size(); i++) {
 				char c = content[i];
 
 				if(c == '{') { state = 1; substate = 0; continue; } // entering shape creation
