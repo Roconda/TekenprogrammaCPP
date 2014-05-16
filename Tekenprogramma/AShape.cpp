@@ -6,6 +6,7 @@ AShape::AShape() {
 	startPoint = NULL;
 	previousPoint = NULL;
 	endPoint = *(new CPoint(-1, -1));
+	isSet = false;
 }
 
 void AShape::undraw(CDC *pDC) {
