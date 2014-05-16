@@ -101,24 +101,34 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 	
 	if(startPoint.x != -1)
    {
-      CDC  *pDC = GetDC();
-		//notxor pen maakt zwart wit
-		// pas waarde aan
-		if(endPoint.x != -1 && getLastShape() != NULL) {
-			getLastShape()->setEndPoint(point);
-			getLastShape()->draw(GetDC());
+	   SetCapture();
+	   CRect windowRect;
+	   GetWindowRect(&windowRect);
+	   ScreenToClient(&windowRect);
+	   CDC  *pDC = GetDC();
+
+	   if(getLastShape() != NULL && !windowRect.PtInRect(point)) {
+		   getLastShape()->isSet = true;
+		   ReleaseCapture();
+	   }
+
+	   if(endPoint.x != -1 && getLastShape() != NULL && !getLastShape()->isSet) {
+					getLastShape()->setEndPoint(point);
+					getLastShape()->draw(pDC);
 		}
       
-      // Kies zwarte pen van de 'stock' (bestaande pen)
-      pDC->SelectStockObject(SS_BLACKRECT);
+		  // Kies zwarte pen van de 'stock' (bestaande pen)
+		  pDC->SelectStockObject(SS_BLACKRECT);
       
-      // Je kunt ook zelf een pen maken:
-      CPen pen;
-      pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
-      pDC->SelectObject(&pen);
+		  // Je kunt ook zelf een pen maken:
+		  CPen pen;
+		  pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
+		  pDC->SelectObject(&pen);
+	   //}
 
       ReleaseDC(pDC);
       endPoint = point;
+
    }
 
 }

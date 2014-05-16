@@ -12,6 +12,7 @@ public:
 
 	CPoint* getStartPoint();
 	CPoint* getEndPoint();
+	bool isSet;
 	
 	std::string getSerialized();
 
