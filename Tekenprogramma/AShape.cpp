@@ -39,6 +39,10 @@ AShape::~AShape() {
 
 }
 
+bool AShape::isOn(CPoint point) const {
+	return false;
+}
+
 std::string AShape::getSerialized() {
 	using namespace std;
 

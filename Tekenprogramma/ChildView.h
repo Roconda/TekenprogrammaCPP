@@ -33,6 +33,8 @@ public:
 	virtual ~CChildView();
 	AShape* getLastShape();
 	void redrawShapes(boolean draw);
+	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	void ToggleDeleteMode();
 protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()

@@ -18,6 +18,7 @@ public:
 
 	virtual void undraw(CDC *pDC) = 0; // pure virtual
 	virtual void draw(CDC *pDC) = 0; // pure virtual
+	virtual bool isOn(CPoint point) const;
 
 protected:
 	CPoint startPoint;

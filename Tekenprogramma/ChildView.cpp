@@ -21,6 +21,8 @@
 
 CPoint startPoint;
 CPoint endPoint;
+int selected = -1;
+bool selectionMode = false;
 
 // CChildView
 CChildView::CChildView()
@@ -37,15 +39,20 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
+	ON_WM_KEYDOWN(&CChildView::OnKeyDown)
 	ON_COMMAND(ID_EDIT_UNDO, &CChildView::OnEditUndo)
 	ON_COMMAND(ID_FILE_SAVETOFILE, &CChildView::OnFileSavetofile)
 	ON_COMMAND(ID_FILE_OPENFILE, &CChildView::OnFileOpenfile)
-	ON_COMMAND(IDR_TOOLBAR1, &CChildView::OnEditUndo)
+	ON_COMMAND(ID_DELETE_MODE, &CChildView::ToggleDeleteMode)
 END_MESSAGE_MAP()
 
 
 
 // CChildView message handlers
+
+void CChildView::ToggleDeleteMode() {
+	selectionMode = !selectionMode;
+}
 
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
 {
@@ -63,7 +70,6 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
-
 	redrawShapes(false);
 }
 
@@ -77,18 +83,56 @@ void CChildView::redrawShapes(boolean draw) {
 
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	startPoint = point;
+	SetCapture();
+	CRect windowRect;
+	GetWindowRect(&windowRect);
+	ScreenToClient(&windowRect);
+
+	if(selectionMode) {
+
+		if(windowRect.PtInRect(point)) {
+			for(unsigned int i=shapes.size()-1; shapes.size() > 0 && i>0; i--) {
+				if(shapes[i]->isOn(point)) {
+					selected = i;
+					break;
+					return;
+				}
+			}
+		}
+
+	}else{
+
+		if(windowRect.PtInRect(point)) {
+			startPoint = point;
 	
-	AShape* as;
+			AShape* as;
 
-	if(Settings::shapeSelected == 0) as = new ACircle();
-	else if(Settings::shapeSelected == 1) as = new ARectangle();
-	else if(Settings::shapeSelected == 2) as = new ALine();
-	else as = new ACircle();
+			if(Settings::shapeSelected == 0) as = new ACircle();
+			else if(Settings::shapeSelected == 1) as = new ARectangle();
+			else if(Settings::shapeSelected == 2) as = new ALine();
+			else as = new ACircle();
 
-	as->setStartPoint(point);
-	shapes.push_back(as);
+			as->setStartPoint(point);
+			shapes.push_back(as);
+		}
+	}
 }
+
+void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+	// catch delete key
+	if(nChar == 46) {
+		if(selected != -1) {
+			CDC* pDC = GetDC();
+			shapes[selected]->undraw(pDC);
+			shapes.erase(shapes.begin() + selected);
+			shapes.shrink_to_fit();
+			ReleaseDC(pDC);
+
+			selected = -1; // back to placeholder
+			TRACE("DELETED SHAPE \n");
+		}
+	}
+} 
 
 // Geeft de laatste shape pointer terug.
 AShape* CChildView::getLastShape() {
@@ -113,18 +157,16 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 	   }
 
 	   if(endPoint.x != -1 && getLastShape() != NULL && !getLastShape()->isSet) {
-					getLastShape()->setEndPoint(point);
-					getLastShape()->draw(pDC);
+			getLastShape()->setEndPoint(point);
+			getLastShape()->draw(pDC);
 		}
+		// Kies zwarte pen van de 'stock' (bestaande pen)
+		//pDC->SelectStockObject(SS_BLACKRECT);
       
-		  // Kies zwarte pen van de 'stock' (bestaande pen)
-		  pDC->SelectStockObject(SS_BLACKRECT);
-      
-		  // Je kunt ook zelf een pen maken:
-		  CPen pen;
-		  pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
-		  pDC->SelectObject(&pen);
-	   //}
+		// Je kunt ook zelf een pen maken:
+		CPen pen;
+		pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
+		pDC->SelectObject(&pen);
 
       ReleaseDC(pDC);
       endPoint = point;

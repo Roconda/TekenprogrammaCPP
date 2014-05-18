@@ -23,3 +23,10 @@ void ACircle::draw(CDC *pDC) {
 ACircle::~ACircle(void)
 {
 }
+
+bool ACircle::isOn(CPoint point) const {
+	CRect ellipse(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	if(ellipse.PtInRect(point)) return true;
+
+	return false;
+}

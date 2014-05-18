@@ -29,3 +29,10 @@ void ALine::draw(CDC *pDC){
 	pDC->MoveTo(startPoint);
 	pDC->LineTo(endPoint);
 }
+
+bool ALine::isOn(CPoint point) const {
+	CRect line(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	if(line.PtInRect(point)) return true;
+
+	return false;
+}

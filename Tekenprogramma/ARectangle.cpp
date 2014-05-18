@@ -25,3 +25,10 @@ void ARectangle::undraw(CDC* pDC) {
 	pDC->SetROP2(R2_NOTXORPEN);
 	pDC->Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 }
+
+bool ARectangle::isOn(CPoint point) const {
+	CRect square(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	if(square.PtInRect(point)) return true;
+
+	return false;
+}

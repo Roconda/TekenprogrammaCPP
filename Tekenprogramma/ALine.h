@@ -8,5 +8,6 @@ public:
 	~ALine(void);
 	void undraw(CDC *pDC);
 	void draw(CDC *pDC);
+	bool isOn(CPoint point) const;
 };
 
