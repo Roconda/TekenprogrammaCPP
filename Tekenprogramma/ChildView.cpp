@@ -91,7 +91,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	if(selectionMode) {
 
 		if(windowRect.PtInRect(point)) {
-			for(unsigned int i=shapes.size()-1; shapes.size() > 0 && i>0; i--) {
+			for(unsigned int i=0; i <= shapes.size(); i++) {
 				if(shapes[i]->isOn(point)) {
 					selected = i;
 					break;
