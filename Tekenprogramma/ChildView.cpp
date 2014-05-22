@@ -44,11 +44,13 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_FILE_SAVETOFILE, &CChildView::OnFileSavetofile)
 	ON_COMMAND(ID_FILE_OPENFILE, &CChildView::OnFileOpenfile)
 	ON_COMMAND(ID_DELETE_MODE, &CChildView::ToggleDeleteMode)
+	ON_COMMAND(ID_BUTTON_DIK, &CChildView::ToggleDik)
 END_MESSAGE_MAP()
-
-
-
 // CChildView message handlers
+
+void CChildView::ToggleDik() {
+	isDik = !isDik;
+}
 
 void CChildView::ToggleDeleteMode() {
 	selectionMode = !selectionMode;
@@ -76,7 +78,14 @@ void CChildView::OnPaint()
 void CChildView::redrawShapes(boolean draw) {
 	CDC* pDC = GetDC();
 
-	for(unsigned int i=0; i<shapes.size(); i++) if(draw) { shapes[i]->draw(pDC); }else{ shapes[i]->undraw(pDC); };
+	for(unsigned int i=0; i<shapes.size(); i++) {
+		CPen pen;
+		pen.CreatePen(PS_SOLID, shapes[i]->lineFat, RGB(0,0,0));
+		pDC->SelectObject(pen);
+
+		if(draw) shapes[i]->draw(pDC); 
+		else shapes[i]->undraw(pDC); 
+	}
 
 	ReleaseDC(pDC);
 }
@@ -91,7 +100,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	if(selectionMode) {
 
 		if(windowRect.PtInRect(point)) {
-			for(unsigned int i=0; i <= shapes.size(); i++) {
+			for(unsigned int i=0; i < shapes.size(); i++) {
 				if(shapes[i]->isOn(point)) {
 					selected = i;
 					break;
@@ -123,13 +132,15 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	if(nChar == 46) {
 		if(selected != -1) {
 			CDC* pDC = GetDC();
+			CPen pen;
+			pen.CreatePen(PS_SOLID, shapes[selected]->lineFat, RGB(0,0,0));
+			pDC->SelectObject(pen);
 			shapes[selected]->undraw(pDC);
 			shapes.erase(shapes.begin() + selected);
 			shapes.shrink_to_fit();
 			ReleaseDC(pDC);
 
-			selected = -1; // back to placeholder
-			TRACE("DELETED SHAPE \n");
+			selected = -1; // back to placeholder value
 		}
 	}
 } 
@@ -152,22 +163,21 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 	   CDC  *pDC = GetDC();
 
 	   if(getLastShape() != NULL && !windowRect.PtInRect(point)) {
-		   getLastShape()->isSet = true;
-		   ReleaseCapture();
+			getLastShape()->isSet = true;
+			ReleaseCapture();
 	   }
 
 	   if(endPoint.x != -1 && getLastShape() != NULL && !getLastShape()->isSet) {
+			int dikheid = (isDik) ? 2 : 1;
+
+			CPen pen;
+			pen.CreatePen(PS_SOLID, dikheid, RGB(0,0,0));
+			pDC->SelectObject(pen);
+
+			getLastShape()->lineFat = dikheid;
 			getLastShape()->setEndPoint(point);
 			getLastShape()->draw(pDC);
 		}
-		// Kies zwarte pen van de 'stock' (bestaande pen)
-		//pDC->SelectStockObject(SS_BLACKRECT);
-      
-		// Je kunt ook zelf een pen maken:
-		CPen pen;
-		pen.CreatePen(PS_DOT, 1, RGB(255,0,0));
-		pDC->SelectObject(&pen);
-
       ReleaseDC(pDC);
       endPoint = point;
 
@@ -194,6 +204,10 @@ void CChildView::OnEditUndo()
 	CDC* pDC = GetDC();
 
 	if(getLastShape()!= NULL && getLastShape() != nullptr){
+
+		CPen pen;
+		pen.CreatePen(PS_SOLID, getLastShape()->lineFat, RGB(0,0,0));
+		pDC->SelectObject(pen);
 		getLastShape()->undraw(pDC);
 
 		delete getLastShape();

@@ -2,7 +2,7 @@
 #include<string>
 #include "AShape.h"
 
-AShape::AShape() {
+AShape::AShape() : lineFat(1) {
 	startPoint = NULL;
 	previousPoint = NULL;
 	endPoint = *(new CPoint(-1, -1));
@@ -10,6 +10,7 @@ AShape::AShape() {
 }
 
 void AShape::undraw(CDC *pDC) {
+
 }
 
 void AShape::draw(CDC *pDC){

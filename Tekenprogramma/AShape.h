@@ -13,6 +13,7 @@ public:
 	CPoint* getStartPoint();
 	CPoint* getEndPoint();
 	bool isSet;
+	int lineFat;
 	
 	std::string getSerialized();
 

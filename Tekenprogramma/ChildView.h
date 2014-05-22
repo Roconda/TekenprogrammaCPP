@@ -20,6 +20,7 @@ public:
 // Attributes
 private:
 	vector<AShape*> shapes;
+	bool isDik;
 
 // Operations
 public:
@@ -35,6 +36,7 @@ public:
 	void redrawShapes(boolean draw);
 	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void ToggleDeleteMode();
+	void ToggleDik();
 protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
